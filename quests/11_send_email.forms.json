@@ -1,0 +1,307 @@
+{
+  "name": "11_send_email.forms",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "957219b0-3bec-4959-a278-9ea17b836d22",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1872,
+        -528
+      ],
+      "id": "aa112418-2de5-474c-9f60-b0f99bcbe602",
+      "name": "Webhook",
+      "webhookId": "957219b0-3bec-4959-a278-9ea17b836d22"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "15PSi6M5ssF-wcTMlC5ifEzl42g7iFld8CxvGtQasJdI",
+          "mode": "list",
+          "cachedResultName": "Member_informations",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15PSi6M5ssF-wcTMlC5ifEzl42g7iFld8CxvGtQasJdI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15PSi6M5ssF-wcTMlC5ifEzl42g7iFld8CxvGtQasJdI/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "이름",
+              "lookupValue": "박영후"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1440,
+        -512
+      ],
+      "id": "fc962df8-f7d5-46b1-b250-24aa4f6c1fd2",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rfCNY2QaX90nrhly",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "option gmail"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -720,
+        -160
+      ],
+      "id": "2591b904-8529-4160-abe9-bde61aa1116b",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "15PSi6M5ssF-wcTMlC5ifEzl42g7iFld8CxvGtQasJdI"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15PSi6M5ssF-wcTMlC5ifEzl42g7iFld8CxvGtQasJdI/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRange",
+              "firstDataRow": "={{ $json.row_number }}"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1248,
+        -512
+      ],
+      "id": "3e0ad223-a7fd-4d92-a60a-9fae8dd20e73",
+      "name": "Get row(s) in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "rfCNY2QaX90nrhly",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxItems": 4
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -1056,
+        -512
+      ],
+      "id": "39b84e1c-8392-468d-8a63-b8a7f287baf6",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "733988a2-5131-4405-a217-5849578045d3",
+              "leftValue": "={{ $json['option gmail'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -1264,
+        -96
+      ],
+      "id": "f0654fed-8b5a-4b42-b2e0-0c569369e281",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['option gmail'].join(\",\") }}",
+        "subject": "=테스트] 입니다.",
+        "message": "={{ $('Webhook').item.json.query.content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -288,
+        -208
+      ],
+      "id": "0d5a72b8-06e3-47ca-9f31-6ccfd1c9a2e5",
+      "name": "Send a message1",
+      "webhookId": "8a4247df-22df-49f7-836e-c7e8fce341e4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "BN19L5xHrge4s5mJ",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "localhost:5678",
+            "connection": "keep-alive",
+            "sec-ch-ua": "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "upgrade-insecure-requests": "1",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-user": "?1",
+            "sec-fetch-dest": "document",
+            "referer": "http://127.0.0.1:5500/",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,ko;q=0.8",
+            "cookie": "rl_page_init_referrer=RudderEncrypt%3AU2FsdGVkX1%2FRaWqMtjeRJMKsf1Z4qqjbdRsoZu0vqP4%3D; rl_page_init_referring_domain=RudderEncrypt%3AU2FsdGVkX1%2Bap1dFNCBMIIwt5ep3IayiS22XP5sTtPs%3D; rl_anonymous_id=RudderEncrypt%3AU2FsdGVkX184LUBBZR1dpBqNEgGC9dnKzoZQkl4ty5bxBnbSWDfPJrxe4Hv2Rc82hJMjqCzfaytOGjonPQ7eLA%3D%3D; rl_user_id=RudderEncrypt%3AU2FsdGVkX1%2FSWUDhRp8aLLXBLiiZMgFyy5rM07FsxKGkDDd%2B3gfiY6AFOFTWqEGvJM4lePSFV7Dx3aT6xORMrYiHWrMxmC2LkMvPvvGk7I6sZc8rZhA7Pu5oyIt0aZj6l1i4%2FZX0PUZ8bHghSpt85%2Fg1s5mCGF4Pc09pt1NkXHc%3D; rl_trait=RudderEncrypt%3AU2FsdGVkX18sS6rPtzV62ZV04Lw7Ojq%2BrZ%2BqL1R0Wom%2Fo0cQyQ%2FcWPyRm4Zx2V4k0nOmuO7U4gbLwG1rvgoPDuUpC8XpXjvVbIxbyjLLXMpJ8TSANg7DRRJM83ivUq0p1f%2Bvaj0Kd%2F5BrTceE2gRceXFZfCk9IaJEoJbXoSVL%2FA%3D; ph_phc_4URIAm1uYfJO7j8kWSe0J8lc8IqnstRLS7Jx8NcakHo_posthog=%7B%22distinct_id%22%3A%22eec87c2ec32eca3b59186241eaf6090f05234b97eb659cbffd686c72a5557989%23e4189617-20d8-417b-886b-7c686d9e0c3b%22%2C%22%24sesid%22%3A%5B1762932836920%2C%22019a7699-4142-72d8-8223-024024671f89%22%2C1762926346556%5D%2C%22%24epp%22%3Atrue%2C%22%24initial_person_info%22%3A%7B%22r%22%3A%22%24direct%22%2C%22u%22%3A%22http%3A%2F%2Flocalhost%3A5678%2Fhome%2Fworkflows%22%7D%7D; rl_session=RudderEncrypt%3AU2FsdGVkX1%2ByfXDbLeGD4%2BwQ7WYVpVigJDQU63PfcL5wm8Ju8Wp3lMGEUBHzTx7rgDGWinNM%2B9HQ2bosgPg7Y7uiHfQhL%2BOCPK71SRnvmT9u4FhGf%2F%2BK2A4J2mwu8RyE7%2F6CC2bBUqLLhWodylI1Gw%3D%3D"
+          },
+          "params": {},
+          "query": {
+            "fname": "영후",
+            "lname": "박",
+            "gender": "male",
+            "content": "테스트 입니다."
+          },
+          "body": {},
+          "webhookUrl": "http://localhost:5678/webhook-test/957219b0-3bec-4959-a278-9ea17b836d22",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1
+  },
+  "versionId": "4ff6e392-434f-4948-aa97-b6544e6fa70b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "eec87c2ec32eca3b59186241eaf6090f05234b97eb659cbffd686c72a5557989"
+  },
+  "id": "QJPvRvBawFyGnkxx",
+  "tags": []
+}
