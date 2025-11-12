@@ -1,0 +1,106 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "957219b0-3bec-4959-a278-9ea17b836d22",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -960,
+        0
+      ],
+      "id": "aa112418-2de5-474c-9f60-b0f99bcbe602",
+      "name": "Webhook",
+      "webhookId": "957219b0-3bec-4959-a278-9ea17b836d22"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "918e87d5-b844-483a-aa34-ac326ce7eb6c",
+              "name": "query",
+              "value": "={{ $json.query }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -752,
+        0
+      ],
+      "id": "79a0db9c-b606-4d3d-a3e2-5c9c784f4ee1",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "=t1acjscat@gmail.com, riswelliswell@gmail.com, dudgn7715@gmail.com",
+        "subject": "테스트] 입니다.",
+        "emailType": "text",
+        "message": "={{ $json.query.content }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "d19e4c34-56c6-47f6-acbd-c5264ef77386",
+      "name": "Send a message",
+      "webhookId": "7836f411-5cb4-466b-a1cf-c596ebba3a01",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "BN19L5xHrge4s5mJ",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1
+  },
+  "versionId": "efc44087-a497-497a-857b-77eda27c1ac1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "eec87c2ec32eca3b59186241eaf6090f05234b97eb659cbffd686c72a5557989"
+  },
+  "id": "QJPvRvBawFyGnkxx",
+  "tags": []
+}
