@@ -1,0 +1,65 @@
+.header {
+    background-color: lightcoral;
+    padding: 15px;
+    text-align: center;
+    font-size: 35px;
+    color: white;
+}
+
+.menu {
+    background-color: lightgray;
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.menu a{
+    background-color: black;
+    padding: 10px 30px;
+    color: white;
+    margin: 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.container {
+    padding: 20px;
+    background-color: lightblue;
+    margin: 10px auto;
+    max-width: 900px;
+}
+
+hr {
+    border: 1px solid gray;
+    margin: 20px 0;
+}
+
+.container h2 {
+    color: skyblue;
+}
+
+.section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.section a {
+    background-color: lightsalmon;
+    display: block;
+    margin: 10px 0;
+    color: darkblue;
+    text-decoration: none;
+    border-radius: 10px;
+    border-color: lightgray;
+}
+
+.footer {
+    background-color: lightcoral;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+}
